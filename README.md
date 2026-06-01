@@ -29,10 +29,11 @@ class Game(pgkit.Scene):
 pgkit.App(800, 600, title="Hello pgkit").run(Game())
 ```
 
-Run the full demo:
+Run the examples:
 
 ```
-python examples/demo.py
+python examples/demo.py    # movement, collisions, chasers, bouncing balls
+python examples/pong.py    # full Pong with Easy/Medium/Hard difficulty
 ```
 
 ## What's inside
