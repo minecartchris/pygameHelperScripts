@@ -89,14 +89,45 @@ plays them — call `anim.update(dt)` then `sprite.set_image(anim.current)`.
 `lerp_color`, `random_color`, `Timer`, `draw_text`, `load_image`, `make_surface`.
 Colors (`pgkit.RED`, `pgkit.GREEN`, …) and directions (`pgkit.UP`, …) are top-level.
 
+## scratchpy — the block-coding app
+
+A drag-and-drop, Scratch-style coding environment that runs on `pgkit`. It lives
+in its own root folder.
+
+```
+python -m scratchpy        # from the repo root
+# or:  python scratchpy/main.py
+```
+
+**How to use it:** drag blocks out of the left palette and snap them under a hat
+("when ⚑ clicked" or "when <key> pressed"). Click a white slot to type a
+number/word. Press **⚑ Run** to execute, **■ Stop** to halt, **Reset** to recentre
+the sprite. Drop a block back on the palette to delete it.
+
+**Blocks included:**
+- *Events* — when ⚑ clicked, when <key> pressed
+- *Motion* — move, turn ↻/↺, go to x/y, point in direction, change x/y, if on edge bounce
+- *Looks* — say, change size by, set size to %
+- *Control* — wait, repeat {}, forever {}
+
+**How it's built** (`scratchpy/`):
+
+| File | Role |
+|------|------|
+| `blocks.py` | block data model, definition registry, and each block's behavior |
+| `engine.py` | generator-based interpreter — each script is a coroutine stepped per frame, so `wait`/`repeat`/`forever` cooperate |
+| `stage.py` | `Stage` + `StageSprite` (Scratch coords/direction) on top of `pgkit.Sprite` |
+| `render.py` | block geometry: measure, layout, draw, hit-test, and snap connectors |
+| `editor.py` | the `pgkit.Scene` tying it together: palette, canvas, drag-drop snapping, slot editing, run controls |
+
 ## Project layout
 ```
 pgkit/            the library
-examples/         demo.py (playable) + smoketest.py (headless API check)
+examples/         demo.py + pong.py (playable) · smoketest.py (headless checks)
+scratchpy/        the block-coding app  (python -m scratchpy)
 ```
 
-A separate Scratch-style block-coding app (built on pgkit) will live in its own
-root folder.
 ```
-python examples/smoketest.py   # verify everything works on your machine
+python examples/smoketest.py   # verify the library
+python scratchpy/selftest.py   # verify the block-coding app
 ```
